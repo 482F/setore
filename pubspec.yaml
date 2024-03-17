@@ -1,0 +1,5 @@
+name: my_app
+environment:
+  sdk: '>=2.18.0 <4.0.0'
+dependencies:
+  sqlite3: ^2.4.0
