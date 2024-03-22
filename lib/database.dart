@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:drift/drift.dart';
 import 'package:setore/sqlite3.dart' as sqlite3;
-import 'package:sqlite3/open.dart' as sqlite3_open;
 
 part 'database.g.dart';
 
@@ -36,21 +33,16 @@ class EntriesFields extends Table {
 
 @DriftDatabase(tables: [Entries, Fields, EntriesFields])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase(final String path,
-      {final String? dllPathForWindows, final String? passphrase})
-      : super(sqlite3.createLazyDb(path, passphrase: passphrase)) {
-    if (dllPathForWindows != null) {
-      sqlite3_open.open.overrideFor(
-        sqlite3_open.OperatingSystem.windows,
-        () => openOnWindows(dllPathForWindows),
-      );
-    }
-  }
+  AppDatabase(
+    final String path, {
+    final String? dllPathForWindows,
+    final String? passphrase,
+  }) : super(sqlite3.createLazyDb(
+          path,
+          dllPathForWindows: dllPathForWindows,
+          passphrase: passphrase,
+        ));
 
   @override
   int get schemaVersion => 1;
-}
-
-DynamicLibrary openOnWindows(String dllPath) {
-  return DynamicLibrary.open(dllPath);
 }
