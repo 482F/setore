@@ -1,0 +1,6 @@
+include: package:lints/recommended.yaml
+linter:
+  exclude:
+    - "**/*.g.dart"
+  rules:
+    - prefer_single_quotes
