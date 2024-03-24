@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:setore/sqlite3.dart' as sqlite3;
 
-part 'database.g.dart';
+part 'drift.g.dart';
 
 @DataClassName('Entry')
 class Entries extends Table {
@@ -19,8 +19,8 @@ enum FieldType {
 
 class Fields extends Table {
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get name => text()();
-  BoolColumn get secret => boolean()();
+  TextColumn get name => text().unique()();
+  BoolColumn get isSecret => boolean()();
   IntColumn get type => intEnum<FieldType>()();
 }
 

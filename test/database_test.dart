@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:setore/database.dart' as db;
+import 'package:setore/drift.dart' as db;
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart' as test;
 
