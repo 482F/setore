@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 import 'package:drift/drift.dart';
-import 'package:my_app/sqlite3.dart' as sqlite3;
+import 'package:setore/sqlite3.dart' as sqlite3;
 import 'package:sqlite3/open.dart' as sqlite3_open;
 
 part 'database.g.dart';
