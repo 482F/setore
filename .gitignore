@@ -1,4 +1,8 @@
 .dart_tool/
 pubspec.lock
 *.g.dart
+.flutter-plugins*
+build/
+*.sq3
+*.dll
 
