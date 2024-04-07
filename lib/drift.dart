@@ -9,7 +9,7 @@ part 'drift.g.dart';
 @DataClassName('Entry')
 class Entries extends Table {
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get name => text()();
+  TextColumn get name => text().unique()();
 }
 
 enum FieldType<T extends Object> {
@@ -31,6 +31,7 @@ enum FieldType<T extends Object> {
   static Uint8List encodeString(String? s) =>
       Uint8List.fromList((s ?? '').codeUnits);
   static String decodeString(Uint8List u) => String.fromCharCodes(u);
+
   static Uint8List encodeDate(DateTime? d) =>
       encodeString(d?.toUtc().toIso8601String() ?? '');
   static DateTime? decodeDate(Uint8List u) {
