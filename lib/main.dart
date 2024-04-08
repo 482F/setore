@@ -11,4 +11,14 @@
 //       sqlcipher.dll のビルドが必要 -> https://zenn.dev/shiena/articles/unity-sqlcipher
 //   user defined field -> like relation table (id, entry_id, field_id, value)
 
-void main() async {}
+import 'package:setore/setore.dart' show Setore;
+
+void main() async {
+  final setore = Setore(
+    './s.sq3',
+    dllPathForWindows: './sqlcipher.dll',
+    passphrase: 'asdf',
+  );
+  await setore.createEntries([(name: 'cr test${DateTime.now().toString()}')]);
+  print(await setore.readEntries());
+}

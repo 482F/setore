@@ -20,6 +20,7 @@ LazyDatabase createLazyDb(final String path,
       assert(rawDb.select('PRAGMA cipher_version;').isNotEmpty);
       rawDb.execute("PRAGMA key = '$passphrase';");
     }
+    rawDb.execute('PRAGMA foreign_keys = ON;');
     return NativeDatabase.opened(rawDb);
   });
 }
