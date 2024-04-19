@@ -19,6 +19,9 @@ class Setore {
           dllPathForWindows: dllPathForWindows,
           passphrase: passphrase,
         );
+  Future<void> dispose() async {
+    return await appDb.close();
+  }
 
   Future<Result<Getter<List<db.Entry>>, Getter<List<String>>>> createEntries(
     final Iterable<({String name})> entriesForInsert,
