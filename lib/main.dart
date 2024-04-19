@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:setore/setore.dart' show Setore;
+import 'package:setore/tabs.dart';
 import 'package:setore/verify.dart';
 
 part 'main.g.dart';
@@ -42,6 +43,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Consumer(
           builder: (context, ref, _) {
@@ -59,68 +61,16 @@ class App extends StatelessWidget {
             } else {
               setore.readEntries().then((es) => print(es));
               return FutureBuilder(
-                  future: setore.readEntries().then((es) => es.first.name),
+                  future: setore.readEntries().then((es) => es),
                   builder: (context, snapshot) => switch (snapshot) {
                         AsyncSnapshot(hasData: true, data: final data) =>
-                          Text(data ?? 'null'),
+                          Tabs(builder: () => (title: 'a', widget: Text('a'))),
                         _ => Text('yet'),
                       });
             }
           },
         ),
       ),
-    );
-  }
-}
-
-class V extends StatelessWidget {
-  V(this.child, {super.key});
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      child: child,
-      flex: 1,
-    );
-  }
-}
-
-@riverpod
-class RText extends _$RText {
-  @override
-  String build() {
-    return '';
-  }
-
-  void update(String n) {
-    state = n;
-  }
-}
-
-class Adder extends StatelessWidget {
-  Adder({super.key});
-
-  final p = AutoDisposeNotifierProvider<RText, String>(() => RText());
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        V(Consumer(
-          builder: (context, ref, _) => Text(ref.watch(p)),
-        )),
-        V(Consumer(
-          builder: (context, ref, _) => TextField(
-            decoration: InputDecoration(
-              labelText: 'StatelessWidget',
-            ),
-            onChanged: (value) {
-              ref.read(p.notifier).update(value);
-            },
-          ),
-        )),
-      ],
     );
   }
 }
