@@ -1,37 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:setore/app_state.dart';
-import 'package:setore/component/list_view_with_sticky_header.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:setore/drift.dart';
+import 'package:setore/page/main_page/entry_detail.dart';
+import 'package:setore/page/main_page/entry_list.dart';
 
-final List<String> l = [];
+part 'main_page.g.dart';
 
-class EntryList extends ConsumerWidget {
-  const EntryList({super.key});
-
+@riverpod
+class OpenedItem extends _$OpenedItem {
   @override
-  build(BuildContext context, WidgetRef ref) {
-    final entries = switch (ref.watch(entriesProvider(l))) {
-      AsyncError(error: final e) => throw e,
-      AsyncData(value: final entries) => entries,
-      _ => null,
-    };
-    return ListViewWithStickyHeader(
-      header: const Text('header'),
-      items: entries,
-      itemBuilder: (item, i) => ListTile(title: Text('$i-${item.name}')),
-    );
+  Entry? build() {
+    return null;
+  }
+
+  void update(Entry? item) {
+    state = item;
   }
 }
 
-class MainPage extends StatelessWidget {
+class MainPage extends ConsumerWidget {
   const MainPage({super.key});
 
   @override
-  build(BuildContext context) {
+  build(BuildContext context, WidgetRef ref) {
+    final openedItem = ref.watch(openedItemProvider);
     return Row(
       children: [
-        const MainPage(),
-        const Placeholder(),
+        EntryList(
+          onOpenItem: (item) =>
+              ref.read(openedItemProvider.notifier).update(item),
+        ),
+        openedItem == null
+            ? const Placeholder()
+            : EntryDetail(item: openedItem),
       ].map((widget) => Expanded(child: widget)).toList(),
     );
   }

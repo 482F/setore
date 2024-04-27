@@ -6,13 +6,13 @@ class ListViewWithStickyHeader<I> extends StatelessWidget {
     required this.header,
     required this.items,
     required this.itemBuilder,
-    this.onDoubleClick,
+    this.onDoubleTapItem,
   });
 
   final Widget header;
   final List<I>? items;
   final Widget Function(I, int) itemBuilder;
-  final void Function(I)? onDoubleClick;
+  final void Function(I)? onDoubleTapItem;
 
   @override
   build(BuildContext context) {
@@ -33,12 +33,17 @@ class ListViewWithStickyHeader<I> extends StatelessWidget {
             SliverOverlapInjector(
               // This is the flip side of the SliverOverlapAbsorber
               // above.
-              handle:
-                  NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, i) => itemBuilder(items![i], i),
+                (context, i) {
+                  final item = items![i];
+                  return GestureDetector(
+                    onDoubleTap: () => onDoubleTapItem?.call(item),
+                    child: itemBuilder(item, i),
+                  );
+                },
                 childCount: items?.length ?? 0,
               ),
             )
@@ -48,4 +53,3 @@ class ListViewWithStickyHeader<I> extends StatelessWidget {
     );
   }
 }
-
