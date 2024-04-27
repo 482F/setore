@@ -76,6 +76,7 @@ class Setore {
   Future<List<db.Entry>> readEntriesByPartNames(
     final List<String> partNames,
   ) async {
+    if (partNames.isEmpty) return readEntries();
     return await (appDb.select(appDb.entries)
           ..where((entries) => partNames
               .map((partName) => entries.name.like('%$partName%'))
