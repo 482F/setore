@@ -6,11 +6,13 @@ class ListViewWithStickyHeader<I> extends StatelessWidget {
     required this.header,
     required this.items,
     required this.itemBuilder,
+    this.onDoubleClick,
   });
 
   final Widget header;
   final List<I>? items;
   final Widget Function(I, int) itemBuilder;
+  final void Function(I)? onDoubleClick;
 
   @override
   build(BuildContext context) {
