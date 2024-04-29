@@ -303,6 +303,10 @@ class Setore {
     ));
   }
 
+  Future<List<db.Field>> readFields() async {
+    return await appDb.select(appDb.fields).get();
+  }
+
   Future<List<db.Field>> readFieldsByNames(
     final Iterable<String> names,
   ) async {
