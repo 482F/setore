@@ -14,7 +14,12 @@ class EntryListRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return EntryList();
+    return Row(
+      children: [
+        const EntryList(),
+        const Placeholder(),
+      ].map((widget) => Expanded(child: widget)).toList(),
+    );
   }
 }
 
@@ -47,14 +52,14 @@ class HomeRoute extends GoRouteData {
 
 @riverpod
 GoRouter _router(_RouterRef ref) {
+  // ignore: prefer_function_declarations_over_variables
+  final onVerified = (BuildContext context, Setore setore) {
+    setSetore(ref, setore);
+    EntryListRoute().go(context);
+  };
   return GoRouter(
-    initialExtra: (BuildContext context, Setore setore) {
-      ref
-          .read(appStateProvider.notifier)
-          .update((state) => state.copyWith(setore: setore));
-      EntryListRoute().go(context);
-    },
-    initialLocation: VerifyRoute().location,
+    initialExtra: onVerified,
+    initialLocation: VerifyRoute($extra: onVerified).location,
     routes: $appRoutes,
   );
 }
@@ -64,11 +69,10 @@ class AppRouter extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(_routerProvider);
+
     return MaterialApp.router(
       routerConfig: router,
-      builder: (context, widget) => Scaffold(
-        body: widget,
-      ),
+      builder: (context, widget) => Scaffold(body: widget),
       debugShowCheckedModeBanner: false,
     );
   }
