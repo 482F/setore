@@ -3,23 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:setore/app_state.dart';
-import 'package:setore/page/entry_list.dart';
+import 'package:setore/page/main_page.dart';
 import 'package:setore/setore.dart';
 import 'package:setore/page/verify.dart';
 
 part 'app_router.g.dart';
 
-class EntryListRoute extends GoRouteData {
-  EntryListRoute();
+class MainPageRoute extends GoRouteData {
+  MainPageRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return Row(
-      children: [
-        const EntryList(),
-        const Placeholder(),
-      ].map((widget) => Expanded(child: widget)).toList(),
-    );
+    return MainPage();
   }
 }
 
@@ -39,7 +34,7 @@ class VerifyRoute extends GoRouteData {
   path: '/',
   routes: [
     TypedGoRoute<VerifyRoute>(path: 'verify'),
-    TypedGoRoute<EntryListRoute>(path: 'entry-list'),
+    TypedGoRoute<MainPageRoute>(path: 'main-page'),
   ],
 )
 class HomeRoute extends GoRouteData {
@@ -55,7 +50,7 @@ GoRouter _router(_RouterRef ref) {
   // ignore: prefer_function_declarations_over_variables
   final onVerified = (BuildContext context, Setore setore) {
     setSetore(ref, setore);
-    EntryListRoute().go(context);
+    MainPageRoute().go(context);
   };
   return GoRouter(
     initialExtra: onVerified,
