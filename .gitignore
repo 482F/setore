@@ -1,7 +1,6 @@
 pubspec.lock
 *.g.dart
 *.sq3
-*.dll
 
 # Miscellaneous
 *.class
