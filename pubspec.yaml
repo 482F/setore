@@ -21,3 +21,5 @@ dev_dependencies:
   go_router_builder: ^2.5.1
   freezed: ^2.5.2
   freezed_annotation: ^2.4.1
+flutter:
+  uses-material-design: true

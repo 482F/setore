@@ -30,10 +30,17 @@ void setSetore(AutoDisposeRef<Object?> ref, Setore setore) {
 }
 
 @riverpod
-Future<List<Entry>> entries(EntriesRef ref, List<String> names) {
-  final setore = ref.read(_setoreProvider.notifier).get(ref);
-  // TODO: ref.invalidateSelf();
-  return setore.readEntriesByPartNames(names);
+class Entries extends _$Entries {
+  Setore get _setore => ref.read(_setoreProvider.notifier).get(ref);
+  @override
+  Future<List<Entry>> build(List<String> names) {
+    return _setore.readEntriesByPartNames(names);
+  }
+
+  void updateEntry(Entry entry) {
+    _setore.updateEntries([entry]);
+    ref.invalidateSelf();
+  }
 }
 
 @riverpod
