@@ -4,6 +4,7 @@ import 'package:drift/drift.dart' show LazyDatabase;
 import 'package:drift/native.dart' show NativeDatabase;
 import 'package:sqlite3/sqlite3.dart' show sqlite3;
 import 'package:sqlite3/open.dart' as sqlite3_open;
+import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart' show openCipherOnAndroid;
 
 LazyDatabase createLazyDb(final String path,
     {final String? dllPathForWindows, final String? passphrase}) {
@@ -14,6 +15,10 @@ LazyDatabase createLazyDb(final String path,
         () => DynamicLibrary.open(dllPathForWindows),
       );
     }
+    sqlite3_open.open.overrideFor(
+      sqlite3_open.OperatingSystem.android,
+      openCipherOnAndroid,
+    );
 
     final rawDb = sqlite3.open(path);
     if (passphrase != null) {

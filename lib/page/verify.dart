@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:setore/setore.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:path/path.dart' as path;
 
 part 'verify.g.dart';
 
@@ -14,6 +16,18 @@ class _Passphrase extends _$Passphrase {
 
   void update(String newPassphrase) {
     state = newPassphrase;
+  }
+}
+
+@riverpod
+class _TemptempDir extends _$TemptempDir {
+  @override
+  String build() {
+    return 'null';
+  }
+
+  void update(String newD) {
+    state = newD;
   }
 }
 
@@ -38,22 +52,33 @@ class Verify extends StatelessWidget {
             ),
           ),
         ),
+        Consumer(
+            builder: (context, ref, _) => Text(ref.watch(_temptempDirProvider))),
         Flexible(
           flex: 0,
           child: Consumer(
             builder: (context, ref, _) {
               final passphrase = ref.watch(_passphraseProvider);
+              path_provider.getApplicationSupportDirectory().then((dir) => ref
+                  .read(_temptempDirProvider.notifier)
+                  .update(path.join(dir.path, 's.sq3')));
+
               return TextButton(
                 onPressed: () async {
+                  final dir =
+                      await path_provider.getApplicationSupportDirectory();
                   final setore = Setore(
-                    './s.sq3',
+                    path.join(dir.path, 's.sq3'),
                     dllPathForWindows: './sqlcipher.dll',
                     passphrase: passphrase,
                   );
                   final verified = await setore
                       .readFieldByName('verify test')
                       .then((f) => true)
-                      .catchError((_) => false);
+                      .catchError((e) {
+                        print(e);
+                        return false;
+                      });
                   if (verified) {
                     onVerified(context, setore);
                   } else {
